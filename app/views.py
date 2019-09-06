@@ -12,14 +12,11 @@ def get_users():
     mycursor.execute("select * from usuarios")
     users = mycursor.fetchall()
 
-    results = []
-    for user in users:
-        x = {
-            "id" : user[0],
-            "nome" : user[1],
-            "Cidade" : user[2]
-        }
-        results.append(x)
+    results = [{
+        'id': user[0],
+        'nome': user[1],
+        'cidade': user[2]
+    } for user in users]
 
     return jsonify(results)
 
