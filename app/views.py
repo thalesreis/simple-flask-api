@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, make_response
 from flask import jsonify
 import json
 import con_mysql_db
@@ -18,7 +18,7 @@ def get_users():
         'cidade': user[2]
     } for user in users]
 
-    return jsonify(results)
+    return make_response(jsonify(results), 200)
 
 
 @app.route('/usuarios/<id>')
@@ -28,6 +28,9 @@ def get_users_id(id):
     values = (id, )
     mycursor.execute(comando, values)
     users = mycursor.fetchall()
+
+    if len(users) == 0:
+        return make_response(jsonify({'message':'user not found', 'id':id}), 404)
 
     results = []
     for user in users:
